@@ -1,17 +1,17 @@
-import lustre/attribute as attr
+import lustre/attribute as a
 import lustre/element.{type Element}
-import lustre/element/html.{body, head, html, link, meta, title}
+import lustre/element/html as h
 
 pub fn layout(elements: List(Element(t))) -> Element(t) {
-  html([], [
-    head([], [
-      title([], "hello.rasib.me"),
-      meta([
-        attr.name("viewport"),
-        attr.attribute("content", "width=device-width,initial-scale=1"),
+  h.html([], [
+    h.head([], [
+      h.title([], "hello.rasib.me"),
+      h.meta([
+        a.name("viewport"),
+        a.attribute("content", "width=device-width,initial-scale=1"),
       ]),
-      link([attr.rel("stylesheet"), attr.href("/static/app.css")]),
+      h.link([a.rel("stylesheet"), a.href("/static/app.css")]),
     ]),
-    body([], elements),
+    h.body([], elements),
   ])
 }

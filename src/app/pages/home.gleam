@@ -3,33 +3,32 @@ import app/components/utils.{override_with}
 import app/models/item.{type Item, Completed, Uncompleted}
 import gleam/http
 import gleam/list
-import lustre/attribute as attr
-import lustre/attribute.{class}
+import lustre/attribute as a
 import lustre/element.{type Element, text}
-import lustre/element/html.{button, div, form, h1, input, span}
+import lustre/element/html as h
 
 pub fn root(items: List(Item)) -> Element(t) {
-  div([class("app")], [
-    h1([class("app-title")], [text("Todo App")]),
-    div([class("todos")], [
+  h.div([a.class("app")], [
+    h.h1([a.class("app-title")], [text("Todo App")]),
+    h.div([a.class("todos")], [
       add_todo_input(),
-      div([class("todos__inner")], [
-        div([class("todos__list")], items |> list.map(item)),
+      h.div([a.class("todos__inner")], [
+        h.div([a.class("todos__list")], items |> list.map(item)),
       ]),
-      div([class("todos__empty")], []),
+      h.div([a.class("todos__empty")], []),
     ]),
   ])
 }
 
 fn add_todo_input() -> Element(t) {
-  form(
-    [class("add-todo-input"), attr.method("POST"), attr.action("/items/create")],
+  h.form(
+    [a.class("add-todo-input"), a.method("POST"), a.action("/items/create")],
     [
-      input([
-        attr.name("todo_title"),
-        attr.class("add-todo-input__input"),
-        attr.placeholder("What needs to be done?"),
-        attr.autofocus(True),
+      h.input([
+        a.name("todo_title"),
+        a.class("add-todo-input__input"),
+        a.placeholder("What needs to be done?"),
+        a.autofocus(True),
       ]),
     ],
   )
@@ -43,25 +42,25 @@ pub fn item(item: Item) -> Element(t) {
     }
   }
 
-  div([class("todo" <> completed_class)], [
-    div([class("todo__inner")], [
-      form(
+  h.div([a.class("todo" <> completed_class)], [
+    h.div([a.class("todo__inner")], [
+      h.form(
         [
-          attr.method("POST"),
-          attr.action(
+          a.method("POST"),
+          a.action(
             "/items/" <> item.id <> "/completion" <> override_with(http.Patch),
           ),
         ],
-        [button([class("todo__button")], [svg_icon_checked()])],
+        [h.button([a.class("todo__button")], [svg_icon_checked()])],
       ),
-      span([class("todo__title")], [text(item.title)]),
+      h.span([a.class("todo__title")], [text(item.title)]),
     ]),
-    form(
+    h.form(
       [
-        attr.method("POST"),
-        attr.action("/items/" <> item.id <> override_with(http.Delete)),
+        a.method("POST"),
+        a.action("/items/" <> item.id <> override_with(http.Delete)),
       ],
-      [button([class("todo__delete")], [svg_icon_delete()])],
+      [h.button([a.class("todo__delete")], [svg_icon_delete()])],
     ),
   ])
 }
