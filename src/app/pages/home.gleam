@@ -19,10 +19,6 @@ pub fn root(items: List(Item)) -> Element(t) {
   ])
 }
 
-pub fn todos_empty() {
-  div([class("todos__empty")], [])
-}
-
 fn add_todo_input() -> Element(t) {
   form(
     [class("add-todo-input"), attr.method("POST"), attr.action("/item/create")],
