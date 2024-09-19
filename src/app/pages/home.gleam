@@ -1,10 +1,10 @@
-import app/models.{type Item, Completed, Uncompleted}
+import app/components/todos.{svg_icon_checked, svg_icon_delete}
+import app/models/item.{type Item, Completed, Uncompleted}
 import gleam/list
 import lustre/attribute as attr
 import lustre/attribute.{class}
 import lustre/element.{type Element, text}
-import lustre/element/html.{button, div, form, h1, input, span, svg}
-import lustre/element/svg
+import lustre/element/html.{button, div, form, h1, input, span}
 
 pub fn root(items: List(Item)) -> Element(t) {
   div([class("app")], [
@@ -15,7 +15,7 @@ pub fn root(items: List(Item)) -> Element(t) {
 
 fn todos(items: List(Item)) -> Element(t) {
   div([class("todos")], [
-    todos_input(),
+    add_todo_input(),
     div([class("todos__inner")], [
       div([class("todos__list")], items |> list.map(item)),
     ]),
@@ -23,7 +23,7 @@ fn todos(items: List(Item)) -> Element(t) {
   ])
 }
 
-fn todos_input() -> Element(t) {
+fn add_todo_input() -> Element(t) {
   form(
     [class("add-todo-input"), attr.method("POST"), attr.action("/item/create")],
     [
@@ -37,7 +37,7 @@ fn todos_input() -> Element(t) {
   )
 }
 
-fn item(item: Item) -> Element(t) {
+pub fn item(item: Item) -> Element(t) {
   let completed_class: String = {
     case item.status {
       Completed -> "todo--completed"
@@ -66,36 +66,6 @@ fn item(item: Item) -> Element(t) {
   ])
 }
 
-fn todos_empty() {
+pub fn todos_empty() {
   div([class("todos__empty")], [])
-}
-
-fn svg_icon_delete() -> Element(t) {
-  svg(
-    [class("todo__delete-icon"), attribute.attribute("viewBox", "0 0 24 24")],
-    [
-      svg.path([
-        attribute.attribute("fill", "currentColor"),
-        attribute.attribute(
-          "d",
-          "M9,3V4H4V6H5V19A2,2 0 0,0 7,21H17A2,2 0 0,0 19,19V6H20V4H15V3H9M9,8H11V17H9V8M13,8H15V17H13V8Z",
-        ),
-      ]),
-    ],
-  )
-}
-
-fn svg_icon_checked() -> Element(t) {
-  svg(
-    [class("todo__checked-icon"), attribute.attribute("viewBox", "0 0 24 24")],
-    [
-      svg.path([
-        attribute.attribute("fill", "currentColor"),
-        attribute.attribute(
-          "d",
-          "M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z",
-        ),
-      ]),
-    ],
-  )
 }

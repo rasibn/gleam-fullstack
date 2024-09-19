@@ -24,6 +24,16 @@ pub fn handle_request(req: Request, ctx: Context) -> Response {
       item_routes.post_create_item(req, ctx)
     }
 
+    ["items", id] -> {
+      use <- wisp.require_method(req, http.Delete)
+      item_routes.delete_item(req, ctx, id)
+    }
+
+    ["items", id, "completion"] -> {
+      use <- wisp.require_method(req, http.Patch)
+      item_routes.patch_toggle_todo(req, ctx, id)
+    }
+
     ["internal-server-error"] -> wisp.internal_server_error()
     ["uprocessable-entity"] -> wisp.unprocessable_entity()
     ["entity-too-large"] -> wisp.entity_too_large()
