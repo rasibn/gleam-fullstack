@@ -20,6 +20,7 @@ pub fn main() {
   let ctx = web.Context(static_directory: static_directory(), items: [])
 
   let handler = router.handle_request(_, ctx)
+
   let assert Ok(_) =
     wisp_mist.handler(handler, secret_key_base)
     |> mist.new

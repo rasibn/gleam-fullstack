@@ -1,5 +1,7 @@
 import app/components/todos.{svg_icon_checked, svg_icon_delete}
+import app/components/utils.{override_with}
 import app/models/item.{type Item, Completed, Uncompleted}
+import gleam/http
 import gleam/list
 import lustre/attribute as attr
 import lustre/attribute.{class}
@@ -21,7 +23,7 @@ pub fn root(items: List(Item)) -> Element(t) {
 
 fn add_todo_input() -> Element(t) {
   form(
-    [class("add-todo-input"), attr.method("POST"), attr.action("/item/create")],
+    [class("add-todo-input"), attr.method("POST"), attr.action("/items/create")],
     [
       input([
         attr.name("todo_title"),
@@ -46,7 +48,9 @@ pub fn item(item: Item) -> Element(t) {
       form(
         [
           attr.method("POST"),
-          attr.action("/items/" <> item.id <> "/completion?_method_PATCH"),
+          attr.action(
+            "/items/" <> item.id <> "/completion" <> override_with(http.Patch),
+          ),
         ],
         [button([class("todo__button")], [svg_icon_checked()])],
       ),
@@ -55,7 +59,7 @@ pub fn item(item: Item) -> Element(t) {
     form(
       [
         attr.method("POST"),
-        attr.action("/items/" <> item.id <> "?_method_DELETE"),
+        attr.action("/items/" <> item.id <> override_with(http.Delete)),
       ],
       [button([class("todo__delete")], [svg_icon_delete()])],
     ),
