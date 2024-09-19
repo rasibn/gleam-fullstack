@@ -22,3 +22,5 @@ Further documentation can be found at <https://hexdocs.pm/app>.
 gleam run   # Run the project
 gleam test  # Run the tests
 ```
+- continue from Define routes section
+- https://gleaming.dev/articles/building-your-first-gleam-web-app/
