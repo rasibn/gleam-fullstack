@@ -9,18 +9,18 @@ import lustre/element/html.{button, div, form, h1, input, span}
 pub fn root(items: List(Item)) -> Element(t) {
   div([class("app")], [
     h1([class("app-title")], [text("Todo App")]),
-    todos(items),
+    div([class("todos")], [
+      add_todo_input(),
+      div([class("todos__inner")], [
+        div([class("todos__list")], items |> list.map(item)),
+      ]),
+      div([class("todos__empty")], []),
+    ]),
   ])
 }
 
-fn todos(items: List(Item)) -> Element(t) {
-  div([class("todos")], [
-    add_todo_input(),
-    div([class("todos__inner")], [
-      div([class("todos__list")], items |> list.map(item)),
-    ]),
-    todos_empty(),
-  ])
+pub fn todos_empty() {
+  div([class("todos__empty")], [])
 }
 
 fn add_todo_input() -> Element(t) {
@@ -64,8 +64,4 @@ pub fn item(item: Item) -> Element(t) {
       [button([class("todo__delete")], [svg_icon_delete()])],
     ),
   ])
-}
-
-pub fn todos_empty() {
-  div([class("todos__empty")], [])
 }
